@@ -1,5 +1,7 @@
 package com.vicky.microservices.order_service;
 
+import com.vicky.microservices.order_service.client.InventoryClient;
+import com.vicky.microservices.order_service.stub.InventoryClientStubs;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -7,6 +9,7 @@ import io.restassured.RestAssured;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
+import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock;
 import org.springframework.context.annotation.Import;
 import org.testcontainers.containers.MySQLContainer;
 
@@ -14,6 +17,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 @Import(TestcontainersConfiguration.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@AutoConfigureWireMock(port = 0) // port = 0 means it choose random port.
 class OrderServiceApplicationTests {
 
     @ServiceConnection
@@ -42,7 +46,7 @@ class OrderServiceApplicationTests {
                      "quantity": 1
                 }
                 """;
-
+        InventoryClientStubs.stubInventoryCall("iphone_15",1);
 
         var responseBodyString = RestAssured.given()
                 .contentType("application/json")

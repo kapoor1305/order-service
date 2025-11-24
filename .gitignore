@@ -13,6 +13,13 @@ target/
 .springBeans
 .sts4-cache
 
+# Ignore MySQL runtime files
+mysql/*.sock
+mysql/*.cnf
+mysql/*.index
+mysql/ib_buffer_pool
+mysql/logs/
+
 ### IntelliJ IDEA ###
 .idea
 *.iws
